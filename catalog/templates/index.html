@@ -1,0 +1,40 @@
+{% extends "base_generic.html" %}
+
+{% load static %}
+{% block videos_content %}
+<div class="container" style="max-width: 1000px">
+    <h1 style="text-align: center;">HỆ THỐNG PHÁT HIỆN TAI NẠN GIAO THÔNG</h1>
+    <h1 style="text-align: center;">TỪ VIDEO GIÁM SÁT</h1>
+
+    <div class="tab-content" style="text-align: justify;">
+        <h3>Giới thiệu</h3>
+        <p>
+            Tai nạn giao thông đường bộ là một trong những nguyên nhân gây tử vong hàng đầu cho con người, trung bình
+            mỗi năm trên thế giới có trên dưới 10 triệu người tử vong vìtai nạn giao thông đường bộ và hàng chục triệu
+            người khác bị thương tích. Cùng với đó là những thiệt hại khổng lồ về kinh tế, bao gồm: chi phí mai táng
+            người chết, chi phíy tế cho người bị thương, thiệt hại về phương tiện giao thông, về hạ tầng, chi phí khắc
+            phục, điều tra vụ tai nạn giao thông đó cùng với thiệt hại do hao phí thời gian lao động của chính người bị
+            tai nạn và cả của những người chăm sóc người đó. Mặt khác, tai nạn giao thông gây nên những tác động tâm lý
+            cả trước mắt cũng như về lâu dài đối với mọi người, nó để lại những di chứng về tâm lý hết sức nặng nề cho
+            người bị tai nạn, người thân của người đó và nếu như trong một địa phương, một quốc gia xảy ra tai nạn giao
+            thông quá nhiều sẽ gây nên hiện tượng bất an cho cư dân ở đó.
+        </p>
+        <p>Do đó mục tiêu của đề tài nhằm khảo sát, tìm hiểu, áp dụng và xem xét hiệu quả của các kỹ thuật học máy và học
+            sâu trong việc phát hiện các hành vi bất thường xảy ra trong chuỗi video quan sát. Mục tiêu hướng đến ứng
+            dụng giám sát an ninh tại những địa điểm mà việc giám sát là cần thiết, tập trung vào thiết kế và xây dựng
+            một ứng dụng giám sát, phát hiện và cảnh báo khi có <b>tai nạn giao thông</b> xảy ra trên các tuyến đường phố ở
+            Việt Nam nói riêng và các quốc gia trên thế giới nói chung. Đặc biệt ở những tuyến đường có ít người qua
+            lại, hoặc các tai nạn xảy ra lúc đêm khuya.</p>
+
+        <h3>Mô hình</h3>
+        <p>Dựa trên những công trình nghiên cứu đã tìm hiểu phù hợp với định hướng đề tài, chúng tôi thiết kế hệ thống với kiến trúc tổng quan như sơ đồ dưới đây.</p>
+        <figure>
+        <img src="{% static 'images/BlockDiagram.png' %}" style="max-height: 323px;margin: 0 auto; margin: 0 auto;display: block;"></img>
+        <figcaption style="text-align: center; margin-top: 10px"><i>Minh họa kiến trúc tổng quan của hệ thống.</i></figcaption>
+        </figure>
+        <p style="margin-top: 20px">Với hướng tiếp cận này, sử dụng mô hình học đa cá thể, một video được xem là “video dương” khi video đó có chứa ít nhất một bất thường đâu đó trong video, ngược lại, một “video âm” là video không chứa bất cứ bất thường nào. Mỗi video được chia thành 32 phân đoạn <b>bằng nhau</b> và <b>không chồng lấp</b>. Số lượng phân đoạn được thiết lập bằng thực nghiệm.</p>
+
+        <p>Sau đó, mỗi phân đoạn được trích đặc trưng bởi mô hình C3D pre-trained bằng bộ trọng số Sports-1M ở vòng lặp thứ 1900000. Tiếp theo, từ đặc trưng của các phân đoạn trong video, một mạng nơron kết nối đầy đủ ba lớp cho ra điểm số của mỗi phân đoạn, và thực hiện tối ưu hàm tổn thất bằng việc so hạng điểm số giữa hai phân đoạn có điểm số cao nhất trong “video âm” và “video dương”.</p>
+    </div>
+</div>
+{% endblock %}

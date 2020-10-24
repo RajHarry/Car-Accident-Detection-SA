@@ -1,0 +1,38 @@
+{% load static %}
+
+
+<div class="container">
+  <!-- <div class="header" style="margin-top:10px">
+    <a href="http://www.hcmut.edu.vn/vi"><img class='img-fluid' src="{% static 'images/topbar_logo.png' %}"
+        alt="Center for Research in Comptuer Vision" style="max-height: 100px;"></a>
+    <br>
+  </div> -->
+</div>
+
+<nav class="navbar navbar-light" style="background-color: transparent;border-bottom: solid 1px #ddd;">
+  <div class="container">
+    <!-- <div class="navbar-header  {% if request.path == '/catalog/' %} active{% endif %}">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-menu"
+        aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div> -->
+    <div class="collapse navbar-collapse" id="main-menu">
+      <ul class="nav navbar-nav navbar-center  nav-pills">
+        
+        <li class="{% if request.path == '/catalog/video-upload' %} active{% endif %}">
+          <a class="nav-link " href="{% url 'catalog:video-upload' %}"
+            class="list-group-item"><b>Upload Video</b></a>
+        </li>
+        <li class="{% if '/catalog/videos/' in request.path%} active{% endif %}">
+          <a class="nav-link " href="/catalog/videos/abnormal"
+            class="list-group-item"><b>VIDEOS DEMO</b></a>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
