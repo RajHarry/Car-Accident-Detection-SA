@@ -25,12 +25,12 @@
         
         <li class="{% if request.path == '/catalog/video-upload' %} active{% endif %}">
           <a class="nav-link " href="{% url 'catalog:video-upload' %}"
-            class="list-group-item"><b>Upload Video</b></a>
+            class="list-group-item"><b>Home</b></a>
         </li>
-        <li class="{% if '/catalog/videos/' in request.path%} active{% endif %}">
+        <!-- <li class="{% if '/catalog/videos/' in request.path%} active{% endif %}">
           <a class="nav-link " href="/catalog/videos/abnormal"
             class="list-group-item"><b>VIDEOS DEMO</b></a>
-        </li>
+        </li> -->
         
       </ul>
     </div>

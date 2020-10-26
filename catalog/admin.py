@@ -1,8 +1,8 @@
-# from django.contrib import admin
+from django.contrib import admin
+from .models import Video
 
+admin.site.register(Video)
 # # Register your models here.
-
-# from .models import Author, Genre, Book, BookInstance, Language
 
 # """Minimal registration of Models.
 # admin.site.register(Book)

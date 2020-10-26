@@ -71,7 +71,6 @@ class VideoListView(generic.TemplateView):
         context['action'] = action
         return context
 
-
 class VideoDetailView_bk(generic.TemplateView):
     template_name = 'catalog/video_detail.html'
 
@@ -150,6 +149,8 @@ class VideoUploadView(View):
     def get(self, request):
         # Order by descent of uploaded time
         videos_list = Video.objects.order_by('-uploaded_at')
+        print(">>>>>>>>>>>>>>>>> In Get <<<<<<<<<<<<<<")
+        print("videos_list: ",videos_list)
         return render(self.request, 'catalog/video_upload.html', {'videos': videos_list})
 
     def post(self, request):
@@ -164,15 +165,22 @@ class VideoUploadView(View):
 
         form = VideoForm(self.request.POST, self.request.FILES)
         if form.is_valid():
+            print(">>> In form")
             video = form.save()
             video.filesize = format_filesize(video.file.size)
             video.title = get_basename(video.file.name)
+            video.row_id = video.__class__.objects.count()
             video.save()
-            response = {'is_valid': True, 'name': video.file.name, 'url': video.file.url, 'id': video.id, 'filesize': video.filesize, 'title': video.title}
+
+            print(f"row_id:{video.row_id}, name: {video.file.name}, url: {video.file.url}, filesize: {video.filesize},title: {video.title}, status: {video.status}")
+            # response = {'is_valid': True, 'name': video.file.name, 'url': video.file.url, 'id': video.id, 'filesize': video.filesize, 'title': video.title}
+            response = {'is_valid': True, 'row_id':video.row_id,'name': video.file.name, 'url': video.file.url, 'filesize': video.filesize, 'title': video.title,'status':video.status}
         elif url:
+            print("In URL")
             url_response = urllib.request.urlopen(url)
             url_info = url_response.info()
             if 'youtube.com' in url:
+                print("In Youtube")
                 yt = YouTube(url)
                 if filename == '':
                     filename = slugify(yt.title)
@@ -182,24 +190,29 @@ class VideoUploadView(View):
                 yt.streams.filter(progressive=True, file_extension='mp4', fps= 30).order_by('resolution').desc().first().download('media/videos/upload/', filename)
                 video.filesize = format_filesize(video.file.size)
                 video.save()
-                response = {'is_valid': True, 'name': video.file.name, 'url': video.file.url, 'id': video.id, 'filesize': video.filesize, 'title': video.title}
+                response = {'is_valid': True, 'name': video.file.name, 'url': video.file.url ,'filesize': video.filesize, 'title': video.title,'status':video.status}
             if 'video' in url_info.get_content_type():
+                print("In Video")
                 temp_video = tempfile.NamedTemporaryFile()
                 write_file(temp_video, url_response)
 
                 video = Video()
+                objects_count = video.objects.count()
+                print("Video Table Objects Count: ",objects_count)
                 video.file.save(filename, files.File(temp_video))
                 video.filesize = format_filesize(video.file.size)
                 video.title = get_basename(video.file.name)
                 video.save()
-                response = {'is_valid': True, 'name': video.file.name, 'url': video.file.url, 'id': video.id, 'filesize': video.filesize, 'title': video.title}
-
+                response = {'is_valid': True, 'name': video.file.name, 'url': video.file.url, 'filesize': video.filesize, 'title': video.title,'status':video.status}
 
         # Extract Feature in Celery
         if response['is_valid'] == True:
-            print(video.id)
-            task = extract_feature.delay(video.id)
+            # video = Video()
+            # print(video.id)
+            # video_id = video.row_id+1
+            task = extract_feature.delay(response["row_id"])
             # assert(False)
+            video.status = "registered"
             video.task_id = task.task_id
             video.save()
             response['task_id'] = task.task_id

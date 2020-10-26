@@ -19,11 +19,11 @@ CELERY_BROKER_URL = 'amqp://localhost'#'amqp://catalog:catalog@localhost:5672/ca
 
 #: Only add pickle to this list if your broker is secured
 #: from unwanted access (see userguide/security.html)
-# CELERY_ACCEPT_CONTENT = ['json']
+CELERY_ACCEPT_CONTENT = ['json']
 # CELERY_RESULT_BACKEND = 'amqp'
-# CELERY_TASK_TRACK_STARTED = True
-# CELERY_TASK_SERIALIZER = 'json'
-# CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
 
 # Django settings for proj project.
 import os

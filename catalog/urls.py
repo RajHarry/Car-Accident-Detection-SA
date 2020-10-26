@@ -5,7 +5,7 @@ from . import views
 
 app_name = 'catalog'
 urlpatterns = [
-    path('', views.index, name='index'),
+    path('', views.VideoUploadView.as_view(), name='index'),
     path('videos/<str:folder_name>/<str:video_action>', views.VideoListView.as_view(), name='videos'),
     # parameter at video detail <str:video_title>, it WORKS EVEN for invalid video string title
     # video_title parameter can be invoked in corresponding VIEW later then 

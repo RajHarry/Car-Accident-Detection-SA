@@ -106,7 +106,9 @@ def image_to_video(img_array,directory,out_path,start,end):
 
     cv2.destroyAllWindows()
     video.release()
+    print("done with temp_video writing")
     os.system(f"ffmpeg -i {out_temp_path} -vcodec libx264 {out_path}")
+    print("done with orig_video writing")
     os.remove(out_temp_path)
 
 def visualize_predictions(video_path, predictions, save_path):

@@ -15,11 +15,12 @@ Including another URLconf
 """
 # from django.contrib import admin
 from django.urls import path, include
-
+from django.contrib import admin
 from django.views.generic import RedirectView, TemplateView
 
 urlpatterns = [
     # path('home', TemplateView.as_view(template_name='home.html'), name='home'),
+    path('admin/', admin.site.urls),
     path('catalog/', include('catalog.urls', namespace='catalog')),
     path('celery-progress/', include('celery_progress.urls', namespace='celery_progress')),
     path('', RedirectView.as_view(url='/catalog/', permanent=True)),

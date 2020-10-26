@@ -1,6 +1,7 @@
 # Create your tasks here
 from __future__ import absolute_import, unicode_literals
 from celery import shared_task
+from celery import Celery
 from django.conf import settings
 
 import numpy as np
@@ -10,6 +11,8 @@ from celery_progress.backend import ProgressRecorder
 from catalog.utils.utils import get_basename
 import time
 from c3d.configuration import *
+
+# app = Celery('locallibrary', backend='amqp', broker='amqp://guest@localhost//')
 
 @shared_task
 def add(x, y):
@@ -26,19 +29,27 @@ def xsum(numbers):
     return sum(numbers)
 
 @shared_task(bind=True)
-def extract_feature(self, video_id):
+# @app.task(bind=True)
+def extract_feature(self,video_id):
     progress_recorder = ProgressRecorder(self)
-    video = Video.objects.get(id = video_id)
+    print("passed row id: ",video_id)
+    try:
+        video = Video.objects.get(row_id = int(video_id))
+    except:
+        video = None
+    video.status = "Processing..."
+    video.save()
     video_path =  settings.MEDIA_ROOT + video.file.name
     score32 = extract_feature_video(video_path, progress_recorder, 32)
     # score64 = extract_feature_video(video_path, progress_recorder, 64)
     file_score32 = 'media/features/' + get_basename(video.file.name) + '_32.npy'
     # file_score64 = 'media/features/' + get_basename(video.file.name) + '_64.npy'
-    print(score32)
+    # print(score32)
     np.save(file_score32, score32)
     # np.save(file_score64, score64)
     video.file_score32.name = file_score32[6:]
     # video.file_score64.name = file_score64[6:]
+    video.status = "Completed"
     video.save()
     return 'done'
 
