@@ -39,7 +39,7 @@ Django web application for demonstration purpose.
     
 5. Open new terminal, activate conda env and run Celery worker server. More information in [celery](http://docs.celeryproject.org/en/latest/getting-started/first-steps-with-celery.html#tut-celery)
 ```
-    celery -A locallibrary worker -l info
+    celery -A locallibrary worker -l INFO
 ```
 
 6. Start Django web app:
