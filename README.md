@@ -8,7 +8,7 @@ Django web application for demonstration purpose.
 
 * Upload video from local or directly from Youtube
 * Plot abnomaly score of video frame by frame.
-
+#### Dataset: http://crcv.ucf.edu/THUMOS14/UCF101/
 
 ## Setup Ubuntu 18.04
 
